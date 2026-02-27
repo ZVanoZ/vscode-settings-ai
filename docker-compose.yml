@@ -1,0 +1,10 @@
+services:
+  mcp-server-node:
+    build:
+      context: .
+      dockerfile: docker/node-mcp-server/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    command: node src/mcp-server/node/mcp-server.js

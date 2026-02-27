@@ -1,0 +1,131 @@
+# This is an example configuration file
+# To learn more, see the full config.yaml reference: https://docs.continue.dev/reference
+
+name: app-config
+version: 1.2.16
+schema: v1
+
+# # Define which models can be used
+# # https://docs.continue.dev/customization/models
+models:
+#------------------------------------------------------------------------------
+#-- prof:ollama
+#-----
+  # Основная модель для чата и редактирования кода (Ctrl+L / Ctrl+I)
+  - name: "app:prof: qwen2.5-Coder 14B (chat,edit)[bash,react,php]"
+    provider: ollama
+    model: qwen2.5-coder:14b
+    apiBase: http://192.168.10.222:11434
+    roles:
+      - chat
+      - edit
+  # Модель для логики и размышлений
+  - name: "app#prof: deepseek-r1:latest (chat)"
+    provider: ollama
+    model: deepseek-r1:latest
+    apiBase: http://192.168.10.222:11434
+    roles:
+      - chat
+  # Специализированная модель для автодополнения по Tab
+  - name: "app#prof: qwen2.5-coder:1.5b (autocomplete)"
+    provider: ollama
+    model: qwen2.5-coder:1.5b
+    apiBase: http://192.168.10.222:11434
+    roles:
+      - autocomplete
+      - chat
+  - name: "app#prof: codestral:latest (22B)[sh,react,php]"
+    provider: ollama
+    model: codestral:latest
+    apiBase: http://192.168.10.222:11434
+  - name: "app#prof: deepseek-coder-v2:latest [sh,react,php]"
+    provider: ollama
+    model: deepseek-coder-v2:latest
+    apiBase: http://192.168.10.222:11434
+  - name: "app#prof: hf.co/t-tech/t-pro-it-1.0-q4_k_m-gguf:q4_k_m [EN<->RU]"
+    provider: ollama
+    model: "hf.co/t-tech/t-pro-it-1.0-q4_k_m-gguf:q4_k_m"
+    apiBase: http://192.168.10.222:11434
+    roles:
+      - chat
+  ## @TODO: установить и протестировать    
+  # - name: "app#prof: llama3:70b (autocomplete)"
+  #   provider: ollama
+  #   model: llama3:70b
+  #   apiBase: http://192.168.10.222:11434
+  #   roles:
+  #     - autocomplete
+  #     - chat
+#------------------------------------------------------------------------------
+#-- ZIM:Geminy
+#-----
+  - name: "app#zim: gemini-2.5-flash (universal)"
+    provider: gemini
+    model: gemini-2.5-flash
+    apiKey: ${{secrets.GEMINI_API_KEY}}
+    # roles:
+    #   - chat
+      # - edit
+      # - apply
+      # - embed
+      # - explain
+
+  # - name: "app#zim: gemini-2.5-flash-lite (autocomplete)"
+  #   provider: gemini
+  #   model: gemini-2.5-flash-lite
+  #   apiKey: ${{secrets.GEMINI_API_KEY}}
+  #   roles:
+  #     - autocomplete
+
+  - name: "app#zim: gemini-3-flash-preview (coding)"
+    provider: gemini
+    model: gemini-3-flash-preview
+    apiKey: ${{secrets.GEMINI_API_KEY}}
+    # roles:
+    #   - chat
+
+  - name: "app#zim: gemini gemma-3-27b-it (coding)"
+    provider: gemini
+    # model: "gemma-3-27b-it" # Официальный ID модели в Google AI Studio
+    model: "gemma-3-27b" # Попробуйте убрать -it
+    apiKey:  ${{secrets.GEMINI_API_KEY}}
+    roles:
+      - chat
+      - edit
+    # # Используем разрешенный блок для передачи специфических настроек
+    # completionOptions:
+    #   stop: ["\nuser:", "\nassistant:"]
+    #   temperature: 0.7
+    # # Этот блок говорит драйверу не использовать системные инструкции
+    # providerOptions:
+    #   useSystemInstruction: false
+    # # ФИКС: Переопределяем шаблоны, чтобы системные правила не отправлялись в API
+    # # Используем принудительный шаблон "none", чтобы отключить 
+    # # автоматическое оборачивание в system_instruction
+    # template: none
+    # promptTemplates:
+    #   # Оставляем шаблоны пустыми или без системного префикса
+    #   chat: "{{{ input }}}"
+    #   edit: "Instructions: {{{ input }}}\n\nCode:\n{{{ code }}}"
+    # Принудительно отключаем системное сообщение, чтобы избежать ошибки 400
+    # Правильный способ передачи системного сообщения в YAML:
+    # chatOptions:
+    #   baseSystemMessage: "Ты эксперт по Node.js, Docker и Docker Compose. Отвечай кратко и по делу."
+
+    # roleNames:
+    #   system: user
+    # completionOptions:
+    #   temperature: 1.0  # Рекомендовано командой Google для Gemma 3
+    #   topP: 0.95
+    #   topK: 64
+
+  - name: "app#zim: gemini-fix gemma-3-27b-it (coding)" 
+    provider: openai # Используем OpenAI провайдер для доступа к модели через Google API
+    model: "gemma-3-27b-it"
+    apiKey:  ${{secrets.GEMINI_API_KEY}}
+    apiBase: "https://generativelanguage.googleapis.com/v1beta/openai/"
+
+
+# # Глобальные правила — они заменяют системный промпт и не вызывают ошибку 400
+# rules:
+#   - "Ты эксперт по Node.js, Docker и Docker Compose. Отвечай кратко и по делу."

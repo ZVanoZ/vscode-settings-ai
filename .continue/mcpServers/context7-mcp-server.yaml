@@ -1,0 +1,10 @@
+name: context7 MCP server
+version: 0.0.1
+schema: v1
+
+# Работает
+mcpServers:
+  - name: context7-mcp
+    type: streamable-http
+    url: "https://mcp.context7.com/mcp"
+    apiKey: ${{secrets.CONTEXT7_API_KEY}}

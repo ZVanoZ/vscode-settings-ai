@@ -1,0 +1,13 @@
+name: pwdcontext MCP server
+version: 0.0.1
+schema: v1
+
+# @TODO: доделать
+# mcpServers:
+#   - name: python-mcp-server
+#     command: python3
+#     args:
+#       - ./src/mcp-server/python/mcp-server.py
+#     env: {}
+
+
