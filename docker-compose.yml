@@ -7,4 +7,5 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
-    command: node src/mcp-server/node/mcp-server.js
+    command: sh -c "npm install && node src/mcp-server/node/mcp-server.js"
+
