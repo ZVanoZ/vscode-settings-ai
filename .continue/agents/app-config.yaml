@@ -84,6 +84,7 @@ models:
     # roles:
     #   - chat
 
+  # @TODO: разобраться можно ли использовать модель "gemma-3-27b-it" для написания кода
   - name: "app#zim: gemini gemma-3-27b-it (coding)"
     provider: gemini
     # model: "gemma-3-27b-it" # Официальный ID модели в Google AI Studio
